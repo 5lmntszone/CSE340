@@ -24,6 +24,21 @@ main {
   margin: 0 auto;
 }
 
+main h1 {
+  font-size: 1.5rem;  
+}
+
+/* Headings */
+h1, h2, h3, .siteName a, .navigation {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 1px;
+}
+
+/* Paragraphs */
+p, a, .right-tab li {
+  font-family: 'Roboto', sans-serif;
+}
+
 /* Header */
 
 #top-header {
@@ -34,7 +49,7 @@ main {
 
 .siteName a {
   text-decoration: none;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: black;
 }
 
@@ -58,6 +73,8 @@ nav {
   list-style: none;
   padding: 1rem;
   font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 1.2em;
 }
 
 /* Hero Section */

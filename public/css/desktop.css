@@ -12,9 +12,13 @@
         padding: .5rem;
         border: 6px solid skyblue;
     }
+
+    main h1 {
+        font-size: 2.5rem;  
+    }      
       
     .siteName a {
-        font-size: 3rem;
+        font-size: 3.5rem;
     }
       
     #tools a {
@@ -22,7 +26,7 @@
     }
 
     .navigation {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
     
     .hero-content {
@@ -87,6 +91,10 @@
 }
 
 @media screen and (min-width: 1000px) {
+    main h1 {
+        font-size: 3.5rem;  
+    }
+      
     .hero h2 {
         font-size: 3rem;
     }
