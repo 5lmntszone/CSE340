@@ -77,6 +77,11 @@ nav {
   font-size: 1.2em;
 }
 
+.navigation a {
+  color: white;
+  text-decoration: none;
+}
+
 /* Hero Section */
 
 h1 {

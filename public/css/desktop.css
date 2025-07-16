@@ -91,6 +91,14 @@
 }
 
 @media screen and (min-width: 1000px) {
+    .siteName a {
+        font-size: 4rem;
+    }
+      
+    #tools a {
+        font-size: 2rem;
+    }
+
     main h1 {
         font-size: 3.5rem;  
     }
