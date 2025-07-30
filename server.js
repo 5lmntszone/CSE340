@@ -8,9 +8,12 @@
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
+const baseController = require("./controllers/baseController")
+const pool = require("./database")
+const utilities = require("./utilities")
 const app = express()
 const static = require("./routes/static")
-const baseController = require("./controllers/baseController")
+const inventoryRoute = require("./routes/inventoryRoute")
 
 /* ***********************
  * Routes
@@ -22,6 +25,9 @@ app.set("layout", "./layouts/layout")
 
 // Index route
 app.get("/", baseController.buildHome)
+
+// Inventory routes
+app.use("/inv", inventoryRoute)
 
 // Error 404
 app.use(async (req, res, next) => {
