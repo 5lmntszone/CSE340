@@ -28,6 +28,10 @@
     .navigation {
         font-size: 2rem;
     }
+
+    #inv-display {
+        grid-template-columns: repeat(2, 1fr);
+      }
     
     .hero-content {
         padding: .6rem;
@@ -91,6 +95,10 @@
 }
 
 @media screen and (min-width: 1000px) {
+    #inv-display {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
     .siteName a {
         font-size: 4rem;
     }

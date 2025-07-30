@@ -29,7 +29,7 @@ main h1 {
 }
 
 /* Headings */
-h1, h2, h3, .siteName a, .navigation {
+h1, h2, h3, .siteName a, .navigation a {
   font-family: 'Bebas Neue', sans-serif;
   letter-spacing: 1px;
 }
@@ -80,6 +80,54 @@ nav {
 .navigation a {
   color: white;
   text-decoration: none;
+}
+
+/* Dynamic Pages */
+
+#inv-display {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr; 
+  gap: 1rem;
+}
+
+#inv-display li {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #fff;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+#inv-display img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+#inv-display .namePrice {
+  margin-top: 0.5rem;
+}
+
+#inv-display .namePrice h2 {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+#inv-display .namePrice a {
+  text-decoration: none;
+  color: #333;
+}
+
+#inv-display .namePrice span {
+  display: block;
+  font-weight: bold;
+  color: #000;
+  font-size: 1rem;
 }
 
 /* Hero Section */

@@ -40,7 +40,7 @@ Util.buildClassificationGrid = async function(data){
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications()
   console.log(data)
-  let list = "<ul>"
+  let list = '<ul class="navigation">'
   list += '<li><a href="/" title="Home page">Home</a></li>'
   data.rows.forEach((row) => {
     list += "<li>"
@@ -58,8 +58,4 @@ Util.getNav = async function (req, res, next) {
   return list
 }
 
-module.exports = Util
-
-router.get("/type/:classificationId", invController.buildByClassificationId);
-
-module.exports = router;
+module.exports = Util;
