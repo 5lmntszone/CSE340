@@ -26,6 +26,9 @@ app.set("layout", "./layouts/layout")
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome))
 
+// Intentional error test route
+app.get("/error-test", utilities.handleErrors(baseController.triggerError))
+
 // Inventory routes
 app.use("/inv", inventoryRoute)
 
