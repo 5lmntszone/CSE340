@@ -237,6 +237,9 @@ h1 {
 
 footer {
   padding-left: .5rem;
+  justify-self: center;
+  text-align: center;
+  line-height: 3px;
 }
 
 /* Detail Page */
