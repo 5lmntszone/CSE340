@@ -238,3 +238,20 @@ h1 {
 footer {
   padding-left: .5rem;
 }
+
+/* Detail Page */
+
+.vehicle-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vehicle-detail img {
+  max-width: 100%;
+  height: auto;
+}
+
+.vehicle-info {
+  font-size: 1.1rem;
+}

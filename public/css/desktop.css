@@ -122,4 +122,15 @@
     .cta-button {
         font-size: 1.5rem;
     }
+
+    /* Detail Page */
+
+    .vehicle-detail {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    
+    .vehicle-info {
+        margin-left: 2rem;
+    }
 }

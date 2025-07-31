@@ -58,6 +58,22 @@ Util.getNav = async function (req, res, next) {
   return list
 }
 
+// Build the detail page
+
+Util.buildVehicleDetail = function(vehicle) {
+  return `
+    <div class="vehicle-detail">
+      <img src="${vehicle.inv_image}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}">
+      <div class="vehicle-info">
+        <h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
+        <p><strong>Price:</strong> $${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}</p>
+        <p><strong>Mileage:</strong> ${new Intl.NumberFormat('en-US').format(vehicle.inv_miles)} miles</p>
+        <p><strong>Description:</strong> ${vehicle.inv_description}</p>
+      </div>
+    </div>
+  `
+}
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
