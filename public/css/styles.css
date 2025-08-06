@@ -63,24 +63,50 @@ p, a, .right-tab li {
 nav {
   background-color: black;
   color: white;
-  padding: 0;
   margin: 0;
 }
 
-.navigation {
-  display: flex;
-  justify-content: space-around;
-  list-style: none;
+.hamburger {
+  display: block;
+  background: none;
+  font-size: 2rem;
+  border: none;
+  color: white;
   padding: 1rem;
+  cursor: pointer;
+}
+
+.navigation {
+  display: none;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
   font-weight: bold;
-  letter-spacing: 1px;
   font-size: 1.2em;
+  background-color: black;
+}
+
+.navigation li {
+  text-align: center;
+  border-top: 1px solid #333;
+  padding: 1rem 0;
+}
+
+.navigation li:first-child {
+  border-top: none;
 }
 
 .navigation a {
   color: white;
   text-decoration: none;
 }
+
+/* Show nav when active */
+.nav-container.active .navigation {
+  display: flex;
+}
+
 
 /* Dynamic Pages */
 

@@ -39,22 +39,22 @@ Util.buildClassificationGrid = async function(data){
  ************************** */
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications()
-  console.log(data)
-  let list = '<ul class="navigation">'
-  list += '<li><a href="/" title="Home page">Home</a></li>'
+  let list = `
+    <div class="nav-container">
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">&#9776;</button>
+      <ul class="navigation" id="navMenu">
+        <li><a href="/" title="Home page">Home</a></li>`
   data.rows.forEach((row) => {
-    list += "<li>"
-    list +=
-      '<a href="/inv/type/' +
-      row.classification_id +
-      '" title="See our inventory of ' +
-      row.classification_name +
-      ' vehicles">' +
-      row.classification_name +
-      "</a>"
-    list += "</li>"
+    list += `
+        <li>
+          <a href="/inv/type/${row.classification_id}" title="See our inventory of ${row.classification_name} vehicles">
+            ${row.classification_name}
+          </a>
+        </li>`
   })
-  list += "</ul>"
+  list += `
+      </ul>
+    </div>`
   return list
 }
 
