@@ -258,3 +258,191 @@ footer {
 .vehicle-info {
   font-size: 1.1rem;
 }
+
+/* Add Classification Form */
+.add-classification-box {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.add-classification-box h2 {
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.add-classification-content p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #555;
+  text-align: center;
+}
+
+#addClassificationForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+#addClassificationForm label {
+  font-weight: bold;
+  color: #222;
+}
+
+#addClassificationForm input[type="text"] {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#addClassificationForm input[type="text"]:hover,
+#addClassificationForm input[type="text"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  outline: none;
+}
+
+#addClassificationForm button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+#addClassificationForm button:hover {
+  background-color: #0056b3;
+}
+
+/* Management Page */
+.flash-message {
+  max-width: 600px;
+  margin: 1rem auto;
+  padding: 1rem;
+  border: 1px solid #17a2b8;
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border-radius: 5px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.management-box {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.management-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.management-box li a {
+  display: block;
+  text-align: center;
+  padding: 0.9rem 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.management-box li a:hover {
+  background-color: #0056b3;
+  transform: scale(1.03);
+}
+
+.add-inventory-box {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#addInventoryForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#addInventoryForm label {
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  color: #333;
+}
+
+#addInventoryForm input,
+#addInventoryForm textarea,
+#addInventoryForm select {
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#addInventoryForm input:focus,
+#addInventoryForm textarea:focus,
+#addInventoryForm select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+  outline: none;
+}
+
+form#addClassificationForm input[type="text"]:valid,
+form#addInventoryForm input[type="text"]:valid,
+form#addInventoryForm textarea:valid,
+form#addInventoryForm select:valid {
+  border-color: #28a745;
+  background-color: #f0fff5;
+}
+
+form#addClassificationForm input[type="text"]:invalid,
+form#addInventoryForm input[type="text"]:invalid,
+form#addInventoryForm textarea:invalid,
+form#addInventoryForm select:invalid {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
+#addInventoryForm button[type="submit"] {
+  padding: 0.9rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#addInventoryForm button[type="submit"]:hover {
+  background-color: #0056b3;
+}

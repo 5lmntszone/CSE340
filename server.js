@@ -7,7 +7,10 @@
  *************************/
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
+const session = require("express-session") 
+const flash = require("express-flash")     
 const env = require("dotenv").config()
+
 const baseController = require("./controllers/baseController")
 const pool = require("./database")
 const utilities = require("./utilities")
@@ -16,12 +19,25 @@ const static = require("./routes/static")
 const inventoryRoute = require("./routes/inventoryRoute")
 
 /* ***********************
+ * Middleware Setup
+ *************************/
+app.use(expressLayouts)
+app.set("view engine", "ejs")
+app.set("layout", "./layouts/layout")
+
+app.use(session({
+  secret: "superSecret",
+  resave: false,
+  saveUninitialized: true,
+}))
+app.use(flash())
+
+app.use(express.urlencoded({ extended: true }))
+
+/* ***********************
  * Routes
  *************************/
 app.use(static)
-app.set("view engine", "ejs")
-app.use(expressLayouts)
-app.set("layout", "./layouts/layout")
 
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome))
@@ -32,15 +48,17 @@ app.get("/error-test", utilities.handleErrors(baseController.triggerError))
 // Inventory routes
 app.use("/inv", inventoryRoute)
 
-// Error 404
+/* ***********************
+ * Error 404
+ *************************/
 app.use(async (req, res, next) => {
-  next({ status: 404, message: "Sorry, we appear to have lost that page."});
+  next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
 
 /* ***********************
-* Express Error Handler
-* Place after all other middleware
-*************************/
+ * Express Error Handler
+ * Place after all other middleware
+ *************************/
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)

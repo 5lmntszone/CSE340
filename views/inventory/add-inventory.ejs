@@ -1,0 +1,106 @@
+<h1>Add New Vehicle</h1>
+
+<% if (message && message.length && message[0]) { %>
+    <div class="flash-message"><%= message[0] %></div>
+  <% } %>  
+
+<div class="add-inventory-box">
+    <form id="addInventoryForm" action="/inv/add-inventory" method="POST">
+
+        <label for="classificationList">Classification</label>
+        <%- classificationList %>
+      
+        <label for="inv_make">Make</label>
+        <input 
+          type="text" 
+          id="inv_make" 
+          name="inv_make" 
+          required 
+          placeholder="e.g., Toyota"
+          value="<%= inv_make || '' %>">
+      
+        <label for="inv_model">Model</label>
+        <input 
+          type="text" 
+          id="inv_model" 
+          name="inv_model" 
+          required 
+          placeholder="e.g., Corolla"
+          value="<%= inv_model || '' %>">
+      
+        <label for="inv_description">Description</label>
+        <textarea 
+          id="inv_description" 
+          name="inv_description" 
+          required 
+          placeholder="Enter a detailed description"><%= inv_description || '' %></textarea>
+      
+        <label for="inv_image">Image Path</label>
+        <input 
+          type="text" 
+          id="inv_image" 
+          name="inv_image" 
+          required 
+          placeholder="e.g., /images/vehicles/car.png"
+          value="<%= inv_image || '/images/vehicles/no-image.png' %>">
+      
+        <label for="inv_thumbnail">Thumbnail Path</label>
+        <input 
+          type="text" 
+          id="inv_thumbnail" 
+          name="inv_thumbnail" 
+          required 
+          placeholder="e.g., /images/vehicles/car-tn.png"
+          value="<%= inv_thumbnail || '/images/vehicles/no-image-tn.png' %>">
+      
+        <label for="inv_price">Price</label>
+        <input 
+          type="number" 
+          id="inv_price" 
+          name="inv_price" 
+          required 
+          placeholder="e.g., 20000"
+          value="<%= inv_price || '' %>">
+      
+        <label for="inv_year">Year</label>
+        <input 
+          type="number" 
+          id="inv_year" 
+          name="inv_year" 
+          required 
+          placeholder="Only digits (e.g., 2023)"
+          value="<%= inv_year || '' %>">
+      
+        <label for="inv_miles">Mileage</label>
+        <input 
+          type="number" 
+          id="inv_miles" 
+          name="inv_miles" 
+          required 
+          placeholder="e.g., 50000"
+          value="<%= inv_miles || '' %>">
+      
+        <label for="inv_color">Color</label>
+        <input 
+          type="text" 
+          id="inv_color" 
+          name="inv_color" 
+          required 
+          placeholder="e.g., Blue"
+          value="<%= inv_color || '' %>">
+      
+        <button type="submit">Add Vehicle</button>
+      </form>      
+</div>
+
+<script>
+  document.getElementById('addInventoryForm').addEventListener('submit', function (e) {
+    const make = document.getElementById('inv_make').value.trim()
+    const model = document.getElementById('inv_model').value.trim()
+    if (!make || !model) {
+      alert("Make and model are required.")
+      e.preventDefault()
+    }
+  })
+</script>
+
