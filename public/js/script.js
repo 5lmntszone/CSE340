@@ -6,4 +6,16 @@ document.addEventListener('DOMContentLoaded', function () {
       navContainer.classList.toggle('active')
     })
   })
+
+document.addEventListener("DOMContentLoaded", () => {
+    const pwd = document.getElementById("account_password")
+    const toggle = document.getElementById("showPassword")
+    if (pwd && toggle) {
+      toggle.addEventListener("change", () => {
+        pwd.type = toggle.checked ? "text" : "password"
+      })
+    }
+  })
+  
+  
   

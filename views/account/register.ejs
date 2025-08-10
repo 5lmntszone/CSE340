@@ -1,0 +1,35 @@
+<div class="auth-form">
+  <h1>Create Account</h1>
+
+  <% if (message && message.length && message[0]) { %>
+    <div class="flash-message"><%= message[0] %></div>
+  <% } %>
+
+  <form id="registerForm" action="/account/register" method="post" novalidate>
+    <label for="account_firstname">First name</label>
+    <input id="account_firstname" name="account_firstname" required value="<%= account_firstname || '' %>">
+
+    <label for="account_lastname">Last name</label>
+    <input id="account_lastname" name="account_lastname" required value="<%= account_lastname || '' %>">
+
+    <label for="account_email">Email</label>
+    <input type="email" id="account_email" name="account_email" required value="<%= account_email || '' %>">
+
+    <label for="account_password">Password</label>
+    <input type="password" id="account_password" name="account_password" required>
+
+    <label class="inline-checkbox">
+      <input type="checkbox" id="showPassword"> Show password
+    </label>
+
+    <small class="password-help">
+      Must be 12+ characters and include an uppercase letter, a lowercase letter, a number, and a special character.
+    </small>
+    
+    <button type="submit">Create account</button>
+  </form>
+
+  <div class="form-alt">
+    Already have an account? <a href="/account/login">Log in</a>
+  </div>
+</div>

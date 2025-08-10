@@ -17,6 +17,8 @@ const utilities = require("./utilities")
 const app = express()
 const static = require("./routes/static")
 const inventoryRoute = require("./routes/inventoryRoute")
+const cookieParser = require("cookie-parser")
+const accountRoute = require("./routes/accountRoute")
 
 /* ***********************
  * Middleware Setup
@@ -34,6 +36,15 @@ app.use(flash())
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static("public"))
+
+app.use(cookieParser())
+app.use(utilities.checkJWTToken)
+app.use("/account", accountRoute)
+
+app.use((req, res, next) => {
+  res.locals.accountData = (req.session && req.session.accountData) || null
+  next()
+})
 
 /* ***********************
  * Routes
