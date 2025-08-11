@@ -94,7 +94,29 @@
   }
   .auth-form .form-alt a:hover { text-decoration: underline; }
 
-  /* ===== Edit Inventory Form ===== */
+  /* Account management links */
+.auth-form p a {
+  display: inline-block;
+  padding: 0.6rem 0.9rem;
+  border-radius: 6px;
+  background: #f7f9fc;
+  border: 1px solid #cfd8e3;
+  color: #007bff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.05s ease;
+}
+
+.auth-form p a:hover {
+  background: #eaf1fb;
+  border-color: #b6c5d8;
+}
+
+.auth-form p a:active {
+  transform: translateY(1px);
+}
+
+  /* Edit Inventory Form */
 .edit-inventory-form {
   max-width: 640px;
   margin: 2rem auto;

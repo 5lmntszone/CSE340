@@ -155,9 +155,14 @@ async function registerAccount(req, res, next) {
  * ************************************ */
 function logoutAccount(req, res) {
   res.clearCookie("jwt")
-  req.session.destroy(() => {
+
+  req.session.regenerate(err => {
+    if (err) {
+      return res.redirect("/")
+    }
+    res.locals.accountData = null
     req.flash("message", "You’ve been logged out.")
-    res.redirect("/")
+    return res.redirect("/")
   })
 }
 

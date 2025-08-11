@@ -7,15 +7,18 @@ document.addEventListener('DOMContentLoaded', function () {
     })
   })
 
-document.addEventListener("DOMContentLoaded", () => {
-    const pwd = document.getElementById("account_password")
-    const toggle = document.getElementById("showPassword")
-    if (pwd && toggle) {
-      toggle.addEventListener("change", () => {
-        pwd.type = toggle.checked ? "text" : "password"
-      })
-    }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("[data-toggle='password']").forEach(wrapper => {
+      const pwd = wrapper.querySelector("input[type='password'], input[type='text']")
+      const toggle = wrapper.querySelector("input[type='checkbox']")
+      if (pwd && toggle) {
+        toggle.addEventListener("change", () => {
+          pwd.type = toggle.checked ? "text" : "password"
+        })
+      }
+    })
   })
+  
   
   
   

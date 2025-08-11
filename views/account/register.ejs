@@ -17,11 +17,13 @@
     <input type="email" id="account_email" name="account_email" required value="<%= account_email || '' %>">
 
     <label for="account_password">Password</label>
-    <input type="password" id="account_password" name="account_password" required>
-
-    <label class="inline-checkbox">
-      <input type="checkbox" id="showPassword"> Show password
-    </label>
+    <div data-toggle="password">
+      <input type="password" id="account_password" name="account_password" required>
+    
+      <label class="inline-checkbox">
+        <input type="checkbox" id="showPassword"> Show password
+      </label>
+    </div>    
 
     <small class="password-help">
       Must be 12+ characters and include an uppercase letter, a lowercase letter, a number, and a special character.

@@ -28,9 +28,15 @@
     <h2>Change Password</h2>
     <form action="/account/update-password" method="post" novalidate>
       <input type="hidden" name="account_id" value="<%= account_id %>">
-  
+
       <label for="new_password">New Password</label>
-      <input type="password" id="new_password" name="new_password" required aria-describedby="pwHelp">
+      <div data-toggle="password">
+        <input type="password" id="new_password" name="new_password" required aria-describedby="pwHelp">
+
+        <label class="inline-checkbox">
+            <input type="checkbox" id="showPassword"> Show password
+        </label>
+      </div>
   
       <small id="pwHelp" class="password-help">
         Password must be at least 12 characters and include uppercase, lowercase, number, and symbol.
