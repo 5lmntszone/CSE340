@@ -31,7 +31,10 @@ async function registerAccount({ account_firstname, account_lastname, account_em
       const result = await pool.query(sql, params)
       return result.rows[0]
     } catch (e) {
-      return null
+      if (e.code === "23505") {
+        return { duplicate: true }
+      }
+      throw e
     }
   }
   

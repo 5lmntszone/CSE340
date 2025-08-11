@@ -1,9 +1,10 @@
 <div class="auth-form">
   <h1>Login</h1>
 
-  <% if (message && message.length && message[0]) { %>
-    <div class="flash-message"><%= message[0] %></div>
-  <% } %>
+  <% const msg = Array.isArray(message) ? message[0] : message; %>
+  <% if (msg) { %>
+    <div class="flash-message"><%= msg %></div>
+  <% } %>  
 
   <form id="loginForm" action="/account/login" method="post" novalidate>
     <label for="account_email">Email</label>

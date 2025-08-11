@@ -10,7 +10,7 @@ async function buildLogin(req, res) {
     title: "Login",
     nav,
     errors: null,
-    message: req.flash("message"),
+    message: req.flash("message").join(" "),
     account_email: ""
   })
 }
@@ -21,10 +21,20 @@ async function buildRegister(req, res) {
     title: "Register",
     nav,
     errors: null,
-    message: req.flash("message"),
+    message: req.flash("message").join(" "),
     account_firstname: "",
     account_lastname: "",
     account_email: ""
+  })
+}
+
+async function buildAccountManagement(req, res) {
+  const nav = await utilities.getNav()
+  res.render("account/management", {
+    title: "Account Management",
+    nav,
+    message: req.flash("message").join(" "),
+    errors: null,
   })
 }
 
@@ -42,6 +52,7 @@ async function accountLogin(req, res) {
       title: "Login",
       nav,
       errors: null,
+      message: req.flash("message").join(" "),
       account_email,
     })
   }
@@ -63,6 +74,7 @@ async function accountLogin(req, res) {
         maxAge: 60 * 60 * 1000,
       })
 
+      req.flash("message", "You're logged in!")
       return res.redirect("/account/")
     } else {
       req.flash("message", "Please check your credentials and try again.")
@@ -70,6 +82,7 @@ async function accountLogin(req, res) {
         title: "Login",
         nav,
         errors: null,
+        message: req.flash("message").join(" "),
         account_email,
       })
     }
@@ -85,22 +98,35 @@ async function registerAccount(req, res, next) {
   const nav = await utilities.getNav()
   try {
     const { account_firstname, account_lastname, account_email, account_password } = req.body
-
     const hashedPassword = await bcrypt.hash(account_password, 10)
 
-    const newAccount = await accountModel.registerAccount({
+    const result = await accountModel.registerAccount({
       account_firstname,
       account_lastname,
       account_email,
       account_password: hashedPassword,
     })
 
-    if (!newAccount) {
+    if (result?.duplicate) {
+      req.flash("message", "That email is already in use. Please try a different one.")
+      return res.status(400).render("account/register", {
+        title: "Register",
+        nav,
+        errors: null,
+        message: req.flash("message").join(" "),
+        account_firstname,
+        account_lastname,
+        account_email,
+      })
+    }
+
+    if (!result) {
       req.flash("message", "Registration failed, please try again.")
       return res.status(400).render("account/register", {
         title: "Register",
         nav,
         errors: null,
+        message: req.flash("message").join(" "),
         account_firstname,
         account_lastname,
         account_email,
@@ -110,11 +136,13 @@ async function registerAccount(req, res, next) {
     req.flash("message", "Nice! Account created. Please log in.")
     return res.redirect("/account/login")
   } catch (err) {
-    req.flash("message", "That email may already be in use. Please try a different one.")
+    console.error("Registration error:", err)
+    req.flash("message", "Something went wrong. Please try again.")
     return res.status(400).render("account/register", {
       title: "Register",
       nav,
       errors: null,
+      message: req.flash("message").join(" "),
       account_firstname: req.body.account_firstname,
       account_lastname: req.body.account_lastname,
       account_email: req.body.account_email,
@@ -137,5 +165,6 @@ module.exports = {
   buildRegister,
   accountLogin,
   registerAccount,
-  logoutAccount
+  logoutAccount,
+  buildAccountManagement
 }

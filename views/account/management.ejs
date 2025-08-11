@@ -1,0 +1,17 @@
+<div class="auth-form">
+    <h1>Account Management</h1>
+  
+    <% const msg = Array.isArray(message) ? message[0] : message; %>
+    <% if (msg) { %>
+      <div class="flash-message"><%= msg %></div>
+    <% } %>    
+  
+    <% if (errors && errors.length) { %>
+      <ul class="flash-message">
+        <% errors.forEach(e => { %><li><%= e.msg %></li><% }) %>
+      </ul>
+    <% } %>
+  
+    <p>You're logged in.</p>
+  </div>
+  

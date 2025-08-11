@@ -98,8 +98,6 @@ Util.buildClassificationList = async function (classification_id = null) {
 
 /* ****************************************
  * Middleware For Handling Errors
- * Wrap other function in this for 
- * General Error Handling
  **************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
@@ -121,6 +119,12 @@ Util.checkJWTToken = (req, res, next) => {
   } else {
     next()
   }
+}
+
+Util.requireAuth = (req, res, next) => {
+  if (req.session?.accountData) return next()
+  req.flash("message", "Please log in")
+  return res.redirect("/account/login")
 }
 
 module.exports = Util;
