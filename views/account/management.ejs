@@ -1,17 +1,15 @@
 <div class="auth-form">
-    <h1>Account Management</h1>
-  
-    <% const msg = Array.isArray(message) ? message[0] : message; %>
-    <% if (msg) { %>
-      <div class="flash-message"><%= msg %></div>
-    <% } %>    
-  
-    <% if (errors && errors.length) { %>
-      <ul class="flash-message">
-        <% errors.forEach(e => { %><li><%= e.msg %></li><% }) %>
-      </ul>
-    <% } %>
-  
-    <p>You're logged in.</p>
-  </div>
-  
+  <h1>Account Management</h1>
+
+  <% const msg = Array.isArray(message) ? message[0] : message; %>
+  <% if (msg) { %><div class="flash-message"><%= msg %></div><% } %>
+
+  <h2>Welcome <%= accountData.account_firstname %></h2>
+
+  <p><a href="/account/update/<%= accountData.account_id %>">Update account information</a></p>
+
+  <% if (accountData.account_type === 'Employee' || accountData.account_type === 'Admin') { %>
+    <h3>Inventory Management</h3>
+    <p><a href="/inv/">Go to Inventory Management</a></p>
+  <% } %>
+</div>

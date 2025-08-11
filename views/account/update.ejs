@@ -1,0 +1,42 @@
+<div class="auth-form">
+    <h1><%= title %></h1>
+  
+    <% const msg = Array.isArray(message) ? message[0] : message; %>
+    <% if (msg) { %><div class="flash-message"><%= msg %></div><% } %>
+    <% if (errors && errors.length) { %>
+      <ul class="flash-message">
+        <% errors.forEach(e => { %><li><%= e.msg %></li><% }) %>
+      </ul>
+    <% } %>
+  
+    <h2>Account Update</h2>
+    <form action="/account/update" method="post" novalidate>
+      <input type="hidden" name="account_id" value="<%= account_id %>">
+  
+      <label for="account_firstname">First Name</label>
+      <input type="text" id="account_firstname" name="account_firstname" required value="<%= account_firstname || '' %>">
+  
+      <label for="account_lastname">Last Name</label>
+      <input type="text" id="account_lastname" name="account_lastname" required value="<%= account_lastname || '' %>">
+  
+      <label for="account_email">Email</label>
+      <input type="email" id="account_email" name="account_email" required value="<%= account_email || '' %>">
+  
+      <button type="submit">Save Changes</button>
+    </form>
+  
+    <h2>Change Password</h2>
+    <form action="/account/update-password" method="post" novalidate>
+      <input type="hidden" name="account_id" value="<%= account_id %>">
+  
+      <label for="new_password">New Password</label>
+      <input type="password" id="new_password" name="new_password" required aria-describedby="pwHelp">
+  
+      <small id="pwHelp" class="password-help">
+        Password must be at least 12 characters and include uppercase, lowercase, number, and symbol.
+      </small>
+  
+      <button type="submit">Update Password</button>
+    </form>
+  </div>
+  

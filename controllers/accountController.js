@@ -156,8 +156,90 @@ async function registerAccount(req, res, next) {
 function logoutAccount(req, res) {
   res.clearCookie("jwt")
   req.session.destroy(() => {
+    req.flash("message", "You’ve been logged out.")
     res.redirect("/")
   })
+}
+
+/* ****************************************
+ *  Deliver update view
+ * ************************************ */
+async function buildUpdateAccount(req, res) {
+  const nav = await utilities.getNav()
+  const account_id = parseInt(req.params.account_id, 10)
+  if (!res.locals.accountData || res.locals.accountData.account_id !== account_id) {
+    req.flash("message", "Unauthorized")
+    return res.redirect("/account/")
+  }
+  const acct = await accountModel.getAccountById(account_id)
+  return res.render("account/update", {
+    title: "Update Account",
+    nav,
+    message: req.flash("message"),
+    errors: null,
+    account_id: acct.account_id,
+    account_firstname: acct.account_firstname,
+    account_lastname: acct.account_lastname,
+    account_email: acct.account_email,
+  })
+}
+
+async function updateAccount(req, res) {
+  const nav = await utilities.getNav()
+  const { account_id, account_firstname, account_lastname, account_email } = req.body
+  const ok = await accountModel.updateAccount({
+    account_id: parseInt(account_id,10),
+    account_firstname,
+    account_lastname,
+    account_email
+  })
+  if (!ok) {
+    req.flash("message", "Update failed. Please try again.")
+    return res.status(400).render("account/update", {
+      title: "Update Account",
+      nav,
+      message: req.flash("message"),
+      errors: null,
+      account_id,
+      account_firstname,
+      account_lastname,
+      account_email
+    })
+  }
+  const fresh = await accountModel.getAccountById(parseInt(account_id,10))
+  if (fresh) {
+    req.session.accountData = {
+      account_id: fresh.account_id,
+      account_firstname: fresh.account_firstname,
+      account_lastname: fresh.account_lastname,
+      account_email: fresh.account_email,
+      account_type: fresh.account_type
+    }
+  }
+  req.flash("message", "Account updated successfully.")
+  return res.redirect("/account/")
+}
+
+async function updatePassword(req, res) {
+  const nav = await utilities.getNav()
+  const { account_id, new_password } = req.body
+  const hashed = await bcrypt.hash(new_password, 10)
+  const ok = await accountModel.updatePassword(parseInt(account_id,10), hashed)
+  if (!ok) {
+    req.flash("message", "Password update failed. Please try again.")
+    return res.status(400).render("account/update", {
+      title: "Update Account",
+      nav,
+      message: req.flash("message"),
+      errors: null,
+      account_id,
+      account_firstname: res.locals.accountData.account_firstname,
+      account_lastname: res.locals.accountData.account_lastname,
+      account_email: res.locals.accountData.account_email,
+    })
+  }
+  req.flash("message", "Password updated successfully.")
+  return res.redirect("/account/")
 }
 
 module.exports = {
@@ -166,5 +248,8 @@ module.exports = {
   accountLogin,
   registerAccount,
   logoutAccount,
-  buildAccountManagement
+  buildAccountManagement,
+  buildUpdateAccount,
+  updateAccount,
+  updatePassword
 }
