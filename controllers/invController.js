@@ -46,12 +46,14 @@ invCont.buildDetailView = async function (req, res, next) {
 invCont.buildManagement = async function (req, res, next) {
   try {
     const nav = await utilities.getNav()
+    const classificationList = await utilities.buildClassificationList() 
     const message = req.flash("message")
 
     res.render("inventory/management", {
       title: "Inventory Management",
       nav,
       message,
+      classificationList, 
     })
   } catch (error) {
     next(error)
@@ -267,6 +269,119 @@ invCont.addInventory = async function (req, res, next) {
       classificationList,
       message: req.flash("message"),
       ...req.body,
+    })
+  }
+}
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  try {
+    const classification_id = parseInt(req.params.classification_id, 10)
+    const invData = await invModel.getInventoryByClassificationId(classification_id)
+    if (invData && invData.length) {
+      return res.json(invData)
+    }
+    return next(new Error("No data returned"))
+  } catch (err) {
+    next(err)
+  }
+}
+
+/* ***************************
+ *  Build edit inventory view
+ * ************************** */
+invCont.editInventoryView = async function (req, res, next) {
+  try {
+    const inv_id = parseInt(req.params.inv_id, 10)
+    const nav = await utilities.getNav()
+    const itemData = await invModel.getVehicleById(inv_id)
+    if (!itemData) {
+      req.flash("message", "Vehicle not found.")
+      return res.redirect("/inv/")
+    }
+    const classificationSelect = await utilities.buildClassificationList(itemData.classification_id)
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+
+    res.render("./inventory/edit-inventory", {
+      title: "Edit " + itemName,
+      nav,
+      classificationSelect,
+      errors: null,
+      flashMessage: req.flash("message").join(" "), 
+      inv_id: itemData.inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_description: itemData.inv_description,
+      inv_image: itemData.inv_image,
+      inv_thumbnail: itemData.inv_thumbnail,
+      inv_price: itemData.inv_price,
+      inv_miles: itemData.inv_miles,
+      inv_color: itemData.inv_color,
+      classification_id: itemData.classification_id
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+/* ***************************
+ *  Process inventory update
+ * ************************** */
+invCont.updateInventory = async function (req, res, next) {
+  try {
+    const {
+      inv_id,
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color,
+    } = req.body
+
+    const payload = {
+      inv_id: parseInt(inv_id, 10),
+      classification_id: parseInt(classification_id, 10),
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price: Number(inv_price),
+      inv_year: Number(inv_year),
+      inv_miles: Number(inv_miles),
+      inv_color,
+    }
+
+    const ok = await invModel.updateInventory(payload)
+
+    if (ok) {
+      req.flash("message", "Vehicle updated successfully.")
+      return res.redirect("/inv/")
+    }
+
+    throw new Error("Update failed")
+  } catch (error) {
+    const nav = await utilities.getNav()
+    const itemData = req.body
+    const classificationSelect = await utilities.buildClassificationList(itemData.classification_id)
+    const itemName = `${itemData.inv_make || ""} ${itemData.inv_model || ""}`.trim()
+
+    req.flash("message", "Failed to update vehicle. Please correct any errors and try again.")
+    return res.status(400).render("./inventory/edit-inventory", {
+      title: "Edit " + (itemName || "Vehicle"),
+      nav,
+      classificationSelect,
+      errors: null,
+      flashMessage: req.flash("message").join(" "),
+      ...itemData,
     })
   }
 }

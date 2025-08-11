@@ -1,7 +1,7 @@
 <h1>Inventory Management</h1>
 
-<% if (message && message.length && message[0]) { %>
-  <div class="flash-message"><%= message[0] %></div>
+<% if (message && message.length) { %>
+  <div class="flash-message"><%= Array.isArray(message) ? message[0] : message %></div>
 <% } %>
 
 <div class="management-box">
@@ -9,4 +9,15 @@
     <li><a href="/inv/add-classification">Add New Classification</a></li>
     <li><a href="/inv/add-inventory">Add New Inventory</a></li>
   </ul>
+
+  <h2>Manage Inventory</h2>
+  <p>Select a classification to view and manage its vehicles.</p>
+
+  <%- classificationList %>
+
+  <table id="inventoryDisplay"></table>
+
+  <noscript>JavaScript must be enabled to use this page.</noscript>
 </div>
+
+<script src="/js/inventory.js"></script>

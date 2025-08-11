@@ -96,5 +96,41 @@ async function addInventory(
   }
 }
 
+async function updateInventory(item) {
+  try {
+    const sql = `
+      UPDATE inventory
+         SET classification_id = $1,
+             inv_make = $2,
+             inv_model = $3,
+             inv_description = $4,
+             inv_image = $5,
+             inv_thumbnail = $6,
+             inv_price = $7,
+             inv_year = $8,
+             inv_miles = $9,
+             inv_color = $10
+       WHERE inv_id = $11
+       RETURNING inv_id`
+    const params = [
+      item.classification_id,
+      item.inv_make,
+      item.inv_model,
+      item.inv_description,
+      item.inv_image,
+      item.inv_thumbnail,
+      item.inv_price,
+      item.inv_year,
+      item.inv_miles,
+      item.inv_color,
+      item.inv_id
+    ]
+    const result = await pool.query(sql, params)
+    return result.rowCount === 1
+  } catch (err) {
+    console.error("updateInventory error:", err)
+    return false
+  }
+}
 
-module.exports = {getClassifications, getInventoryByClassificationId, getVehicleById, checkExistingClassification,addClassification, addInventory};
+module.exports = {getClassifications, getInventoryByClassificationId, getVehicleById, checkExistingClassification, addClassification, addInventory, updateInventory };
