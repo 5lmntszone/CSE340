@@ -8,6 +8,7 @@
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const session = require("express-session") 
+const pgSession = require("connect-pg-simple")(session)
 const flash = require("express-flash")     
 const env = require("dotenv").config()
 
@@ -26,11 +27,23 @@ const accountRoute = require("./routes/accountRoute")
 app.use(expressLayouts)
 app.set("view engine", "ejs")
 app.set("layout", "./layouts/layout")
+app.set("trust proxy", 1) 
 
 app.use(session({
-  secret: "superSecret",
+  store: new pgSession({
+    pool,
+    tableName: "session",            
+    createTableIfMissing: true      
+  }),
+  secret: process.env.SESSION_SECRET, 
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7,  
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production"
+  }
 }))
 app.use(flash())
 
