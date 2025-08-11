@@ -77,12 +77,13 @@ const updateAccountRules = () => [
 const checkUpdateAccount = async (req, res, next) => {
   const errors = validationResult(req)
   if (errors.isEmpty()) return next()
+
   const nav = await utilities.getNav()
   return res.status(400).render("account/update", {
     title: "Update Account",
     nav,
-    message: errors.array()[0].msg,
     errors: errors.array(),
+    message: null, 
     account_id: req.body.account_id,
     account_firstname: req.body.account_firstname,
     account_lastname: req.body.account_lastname,
@@ -104,7 +105,7 @@ const checkUpdatePassword = async (req, res, next) => {
   return res.status(400).render("account/update", {
     title: "Update Account",
     nav,
-    message: errors.array()[0].msg,
+    message: null,
     errors: errors.array(),
     account_id: req.body.account_id,
     account_firstname: res.locals.accountData?.account_firstname ?? "",

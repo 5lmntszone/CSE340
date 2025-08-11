@@ -192,12 +192,14 @@ async function buildUpdateAccount(req, res) {
 async function updateAccount(req, res) {
   const nav = await utilities.getNav()
   const { account_id, account_firstname, account_lastname, account_email } = req.body
+
   const ok = await accountModel.updateAccount({
-    account_id: parseInt(account_id,10),
+    account_id: parseInt(account_id, 10),
     account_firstname,
     account_lastname,
     account_email
   })
+
   if (!ok) {
     req.flash("message", "Update failed. Please try again.")
     return res.status(400).render("account/update", {
@@ -211,16 +213,23 @@ async function updateAccount(req, res) {
       account_email
     })
   }
-  const fresh = await accountModel.getAccountById(parseInt(account_id,10))
+
+  const fresh = await accountModel.getAccountById(parseInt(account_id, 10))
   if (fresh) {
-    req.session.accountData = {
-      account_id: fresh.account_id,
-      account_firstname: fresh.account_firstname,
-      account_lastname: fresh.account_lastname,
-      account_email: fresh.account_email,
-      account_type: fresh.account_type
-    }
+    const { account_password, ...safeAccount } = fresh
+
+    req.session.accountData = safeAccount
+    res.locals.accountData = safeAccount
+
+    const token = jwt.sign(safeAccount, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 60 * 60 })
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV !== "development", 
+      maxAge: 60 * 60 * 1000
+    })
   }
+
   req.flash("message", "Account updated successfully.")
   return res.redirect("/account/")
 }

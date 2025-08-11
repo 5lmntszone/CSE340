@@ -2,12 +2,13 @@
     <h1><%= title %></h1>
   
     <% const msg = Array.isArray(message) ? message[0] : message; %>
-    <% if (msg) { %><div class="flash-message"><%= msg %></div><% } %>
     <% if (errors && errors.length) { %>
       <ul class="flash-message">
         <% errors.forEach(e => { %><li><%= e.msg %></li><% }) %>
       </ul>
-    <% } %>
+    <% } else if (msg) { %>
+      <div class="flash-message"><%= msg %></div>
+    <% } %>    
   
     <h2>Account Update</h2>
     <form action="/account/update" method="post" novalidate>

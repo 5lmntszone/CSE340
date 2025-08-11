@@ -1,0 +1,31 @@
+<div class="auth-form">
+    <h1><%= title %></h1>
+  
+    <% const msg = Array.isArray(flashMessage) ? flashMessage[0] : flashMessage; %>
+    <% if (msg) { %>
+      <div class="flash-message"><%= msg %></div>
+    <% } %>
+  
+    <p><strong>Confirm Deletion</strong> — This action is permanent.</p>
+  
+    <div class="add-inventory-box">
+      <form action="/inv/delete" method="POST">
+        <input type="hidden" name="inv_id" value="<%= inv_id %>">
+  
+        <label for="inv_make">Make</label>
+        <input type="text" id="inv_make" value="<%= inv_make %>" readonly>
+  
+        <label for="inv_model">Model</label>
+        <input type="text" id="inv_model" value="<%= inv_model %>" readonly>
+  
+        <label for="inv_year">Year</label>
+        <input type="text" id="inv_year" value="<%= inv_year %>" readonly>
+  
+        <label for="inv_price">Price</label>
+        <input type="text" id="inv_price" value="$<%= new Intl.NumberFormat('en-US').format(inv_price) %>" readonly>
+  
+        <button type="submit" class="danger">Delete Vehicle</button>
+      </form>
+    </div>
+  </div>
+  

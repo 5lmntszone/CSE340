@@ -523,3 +523,74 @@ form#addInventoryForm select:invalid {
 #addInventoryForm button[type="submit"]:hover {
   background-color: #0056b3;
 }
+
+.auth-form > p {
+  text-align: center;
+  margin: 0 0 1rem;
+  color: #444;
+}
+.auth-form > p strong {
+  color: #b71c1c;
+}
+
+.add-inventory-box {
+  margin-top: 0.75rem;
+  padding: 1.25rem;
+  background-color: #fafafa;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.add-inventory-box label {
+  display: block;
+  font-weight: 600;
+  margin: 0.8rem 0 0.35rem;
+  color: #333;
+}
+
+.add-inventory-box input[readonly] {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #cfcfcf;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f3f4f6;   
+  color: #555;
+  cursor: not-allowed;
+}
+.add-inventory-box input[readonly]:focus {
+  outline: none;
+  border-color: #cfcfcf;
+  box-shadow: none;
+}
+
+.add-inventory-box button.danger {
+  display: block;
+  width: 100%;
+  background: #d9534f;
+  color: #fff;
+  border: none;
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 6px;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background .2s ease, transform .05s ease;
+}
+.add-inventory-box button.danger:hover {
+  background: #c9302c;
+}
+.add-inventory-box button.danger:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 420px) {
+  .auth-form {
+    padding: 1.1rem;
+  }
+  .add-inventory-box {
+    padding: 1rem;
+  }
+}
