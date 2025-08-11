@@ -93,4 +93,77 @@
     text-decoration: none;
   }
   .auth-form .form-alt a:hover { text-decoration: underline; }
+
+  /* ===== Edit Inventory Form ===== */
+.edit-inventory-form {
+  max-width: 640px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.edit-inventory-form h1 {
+  font-size: 1.6rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.edit-inventory-form label {
+  display: block;
+  font-weight: 600;
+  margin: 0.85rem 0 0.35rem;
+}
+
+.edit-inventory-form input[type="text"],
+.edit-inventory-form input[type="number"],
+.edit-inventory-form select,
+.edit-inventory-form textarea {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #cfcfcf;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color .2s, box-shadow .2s;
+  box-sizing: border-box;
+}
+
+.edit-inventory-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.edit-inventory-form input:focus,
+.edit-inventory-form select:focus,
+.edit-inventory-form textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0,123,255,.12);
+  outline: none;
+}
+
+.edit-inventory-form button[type="submit"] {
+  width: 100%;
+  background: #007bff;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.85rem;
+  border: 0;
+  border-radius: 6px;
+  margin-top: 1.1rem;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.edit-inventory-form button[type="submit"]:hover {
+  background: #0056b3;
+}
+
+.field-error {
+  border: 2px solid red;
+  background-color: #ffecec;
+}
+
+
   

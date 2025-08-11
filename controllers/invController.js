@@ -343,10 +343,48 @@ invCont.updateInventory = async function (req, res, next) {
       inv_price,
       inv_year,
       inv_miles,
-      inv_color,
+      inv_color
     } = req.body
 
-    const payload = {
+    const hasBlank =
+      !inv_id ||
+      !classification_id ||
+      !inv_make?.trim() ||
+      !inv_model?.trim() ||
+      !inv_description?.trim() ||
+      !inv_image?.trim() ||
+      !inv_thumbnail?.trim() ||
+      !inv_price ||
+      !inv_year ||
+      !inv_miles ||
+      !inv_color?.trim()
+
+    if (hasBlank) {
+      const nav = await utilities.getNav()
+      const classificationSelect = await utilities.buildClassificationList(classification_id || null)
+      const itemName = `${inv_make || ""} ${inv_model || ""}`.trim() || "Vehicle"
+
+      return res.status(400).render("./inventory/edit-inventory", {
+        title: "Edit " + itemName,
+        nav,
+        classificationSelect,
+        errors: null,
+        flashMessage: "Please fill out all required fields before submitting.", 
+        inv_id,
+        classification_id,
+        inv_make,
+        inv_model,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_year,
+        inv_miles,
+        inv_color
+      })
+    }
+
+    const ok = await invModel.updateInventory({
       inv_id: parseInt(inv_id, 10),
       classification_id: parseInt(classification_id, 10),
       inv_make,
@@ -357,10 +395,8 @@ invCont.updateInventory = async function (req, res, next) {
       inv_price: Number(inv_price),
       inv_year: Number(inv_year),
       inv_miles: Number(inv_miles),
-      inv_color,
-    }
-
-    const ok = await invModel.updateInventory(payload)
+      inv_color
+    })
 
     if (ok) {
       req.flash("message", "Vehicle updated successfully.")
@@ -370,20 +406,19 @@ invCont.updateInventory = async function (req, res, next) {
     throw new Error("Update failed")
   } catch (error) {
     const nav = await utilities.getNav()
-    const itemData = req.body
-    const classificationSelect = await utilities.buildClassificationList(itemData.classification_id)
-    const itemName = `${itemData.inv_make || ""} ${itemData.inv_model || ""}`.trim()
+    const classificationSelect = await utilities.buildClassificationList(req.body.classification_id || null)
+    const itemName = `${req.body.inv_make || ""} ${req.body.inv_model || ""}`.trim() || "Vehicle"
 
-    req.flash("message", "Failed to update vehicle. Please correct any errors and try again.")
     return res.status(400).render("./inventory/edit-inventory", {
-      title: "Edit " + (itemName || "Vehicle"),
+      title: "Edit " + itemName,
       nav,
       classificationSelect,
       errors: null,
-      flashMessage: req.flash("message").join(" "),
-      ...itemData,
+      flashMessage: "Failed to update vehicle. Please correct any errors and try again.",
+      ...req.body
     })
   }
 }
+
 
 module.exports = invCont

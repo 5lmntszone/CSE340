@@ -1,10 +1,10 @@
-<h1><%= title %></h1>
+<div class="edit-inventory-form">
+  <h1><%= title %></h1>
 
-<% if (flashMessage) { %>
+  <% if (flashMessage) { %>
     <div class="flash-message"><%= flashMessage %></div>
   <% } %>
 
-<div class="add-inventory-box">
   <form id="editInventoryForm" action="/inv/update" method="POST" novalidate>
     <input type="hidden" name="inv_id" value="<%= inv_id %>">
 
@@ -40,4 +40,23 @@
 
     <button type="submit">Update Vehicle</button>
   </form>
+
+  <script>
+    document.getElementById("editInventoryForm").addEventListener("submit", function (event) {
+      let valid = true;
+      this.querySelectorAll("[required]").forEach(function (field) {
+        if (!field.value.trim()) {
+          valid = false;
+          field.classList.add("field-error");
+        } else {
+          field.classList.remove("field-error");
+        }
+      });
+    
+      if (!valid) {
+        event.preventDefault();
+        alert("Please fill out all fields before submitting.");
+      }
+    });
+  </script>
 </div>
