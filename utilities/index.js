@@ -6,32 +6,52 @@ require("dotenv").config()
 /* **************************************
 * Build the classification view HTML
 * ************************************ */
-Util.buildClassificationGrid = async function(data){
-  let grid
-  if(data.length > 0){
+Util.buildClassificationGrid = async function (data) {
+  let grid = ""
+  if (data.length > 0) {
     grid = '<ul id="inv-display">'
-    data.forEach(vehicle => { 
+    data.forEach((vehicle) => {
       grid += '<li>'
-      grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
-      + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
-      + 'details"><img src="' + vehicle.inv_thumbnail 
-      +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
-      +' on CSE Motors" /></a>'
+      grid +=
+        '<a href="../../inv/detail/' +
+        vehicle.inv_id +
+        '" title="View ' +
+        vehicle.inv_make +
+        " " +
+        vehicle.inv_model +
+        'details"><img src="' +
+        vehicle.inv_thumbnail +
+        '" alt="Image of ' +
+        vehicle.inv_make +
+        " " +
+        vehicle.inv_model +
+        ' on CSE Motors" /></a>'
       grid += '<div class="namePrice">'
-      grid += '<hr />'
-      grid += '<h2>'
-      grid += '<a href="../../inv/detail/' + vehicle.inv_id +'" title="View ' 
-      + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
-      + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
-      grid += '</h2>'
-      grid += '<span>$' 
-      + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
-      grid += '</div>'
-      grid += '</li>'
+      grid += "<hr />"
+      grid += "<h2>"
+      grid +=
+        '<a href="../../inv/detail/' +
+        vehicle.inv_id +
+        '" title="View ' +
+        vehicle.inv_make +
+        " " +
+        vehicle.inv_model +
+        ' details">' +
+        vehicle.inv_make +
+        " " +
+        vehicle.inv_model +
+        "</a>"
+      grid += "</h2>"
+      grid +=
+        "<span>$" +
+        new Intl.NumberFormat("en-US").format(vehicle.inv_price) +
+        "</span>"
+      grid += "</div>"
+      grid += "</li>"
     })
-    grid += '</ul>'
-  } else { 
-    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+    grid += "</ul>"
+  } else {
+    grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>'
   }
   return grid
 }
@@ -105,25 +125,32 @@ Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)
 * Middleware to check token validity
 **************************************** */
 Util.checkJWTToken = (req, res, next) => {
-  if (req.cookies?.jwt) {
-    jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, (err, accountData) => {
-      if (err) {
-        req.flash("message", "Please log in")
-        res.clearCookie("jwt")
-        return res.redirect("/account/login")
-      }
-      res.locals.accountData = accountData
-      res.locals.loggedin = 1
-      next()
-    })
-  } else {
+  const token = req.cookies?.jwt
+  if (!token) return next()
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, accountData) => {
+    if (err) {
+      res.clearCookie("jwt")
+      return next()
+    }
+    res.locals.accountData = accountData
+    req.session.accountData = accountData
     next()
-  }
+  })
 }
 
 Util.requireAuth = (req, res, next) => {
-  if (req.session?.accountData) return next()
+  const user = res.locals.accountData || req.session?.accountData
+  if (user) return next()
   req.flash("message", "Please log in")
+  return res.redirect("/account/login")
+}
+
+// require Employee or Admin
+Util.requireEmployeeOrAdmin = (req, res, next) => {
+  const type = res.locals.accountData?.account_type || req.session?.accountData?.account_type
+  if (type === "Employee" || type === "Admin") return next()
+  req.flash("message", "Please log in with sufficient privileges.")
   return res.redirect("/account/login")
 }
 

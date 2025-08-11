@@ -42,7 +42,7 @@ app.use(utilities.checkJWTToken)
 app.use("/account", accountRoute)
 
 app.use((req, res, next) => {
-  res.locals.accountData = req.session?.accountData || null
+  res.locals.accountData = res.locals.accountData || req.session?.accountData || null
   next()
 })
 
