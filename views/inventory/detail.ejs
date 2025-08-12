@@ -3,3 +3,78 @@
   <h1><%= title %></h1>
   <%- vehicleHTML %>
 </main>
+
+<hr>
+
+<% if (message && message.length) { %>
+  <div class="flash-message"><%= Array.isArray(message) ? message[0] : message %></div>
+<% } %>
+
+<% if (avgRating && avgRating.count > 0) { %>
+  <p><strong>Average rating:</strong> <%= avgRating.avg %> ⭐ (<%= avgRating.count %> reviews)</p>
+<% } %>
+
+<h3>Reviews</h3>
+
+<% if (reviews && reviews.length) { %>
+  <ul class="reviews">
+    <% reviews.forEach(r => { 
+         const isStickyForThis = formData && String(formData.review_id) === String(r.review_id);
+         const stickyRating = isStickyForThis ? formData.rating : r.rating;
+         const stickyText = isStickyForThis ? formData.review_text : r.review_text;
+    %>
+      <li>
+        <div class="review-head">
+          <strong><%= r.account_firstname %> <%= r.account_lastname %></strong>
+          <span> — <%= r.rating %> ⭐</span>
+          <small><%= new Date(r.created_at).toLocaleString() %></small>
+        </div>
+        <p><%= r.review_text %></p>
+
+        <% if (accountData && (accountData.account_id === r.account_id || accountData.account_type === 'Admin' || accountData.account_type === 'Employee')) { %>
+          <form action="/reviews/update" method="post" class="inline-form">
+            <input type="hidden" name="review_id" value="<%= r.review_id %>">
+            <input type="hidden" name="inv_id" value="<%= vehicleData.inv_id %>">
+
+            <label class="sr-only" for="rating-<%= r.review_id %>">Rating</label>
+            <input id="rating-<%= r.review_id %>" type="number" name="rating" min="1" max="5" 
+                   value="<%= stickyRating %>" required>
+
+            <label class="sr-only" for="text-<%= r.review_id %>">Text</label>
+            <input id="text-<%= r.review_id %>" type="text" name="review_text" 
+                   value="<%= stickyText %>" required>
+
+            <button type="submit">Update</button>
+          </form>
+
+          <form action="/reviews/delete" method="post" class="inline-form">
+            <input type="hidden" name="review_id" value="<%= r.review_id %>">
+            <input type="hidden" name="inv_id" value="<%= vehicleData.inv_id %>">
+            <button type="submit" class="danger small">Delete</button>
+          </form>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No reviews yet.</p>
+<% } %>
+
+<% if (accountData && !userHasReview) { 
+     const stickyCreate = formData && !formData.review_id; 
+%>
+  <h4>Add your review</h4>
+  <form action="/reviews/create" method="post" class="review-form" novalidate>
+    <input type="hidden" name="inv_id" value="<%= vehicleData.inv_id %>">
+    <label for="rating">Rating (1–5)</label>
+    <input id="rating" type="number" name="rating" min="1" max="5" 
+           value="<%= stickyCreate ? formData.rating : '' %>" required>
+    <label for="review_text">Review</label>
+    <textarea id="review_text" name="review_text" required placeholder="What did you think? (min 10 chars)"><%= stickyCreate ? formData.review_text : '' %></textarea>
+    <button type="submit">Submit Review</button>
+  </form>
+<% } else if (accountData && userHasReview) { %>
+  <p><em>You’ve already reviewed this vehicle. You can edit your review above.</em></p>
+<% } else { %>
+  <p><a href="/account/login">Log in</a> to write a review.</p>
+<% } %>

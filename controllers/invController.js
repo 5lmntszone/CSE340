@@ -1,5 +1,6 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
+const reviewModel = require("../models/review-model")
 
 const invCont = {}
 
@@ -23,20 +24,30 @@ invCont.buildByClassificationId = async function (req, res, next) {
  * Build inventory detail view
  ************************** */
 invCont.buildDetailView = async function (req, res, next) {
-  const invId = parseInt(req.params.invId)
+  const invId = parseInt(req.params.invId, 10)
   const vehicleData = await invModel.getVehicleById(invId)
-
-  if (!vehicleData) {
-    return next(new Error("Vehicle not found"))
-  }
+  if (!vehicleData) return next(new Error("Vehicle not found"))
 
   const nav = await utilities.getNav()
   const vehicleHTML = utilities.buildVehicleDetail(vehicleData)
 
+  const reviews = await reviewModel.getReviewsByInvId(invId)
+  const avgRating = await reviewModel.getAverageRating(invId)
+
+  const accountData = req.session.accountData || null
+  const userHasReview = !!(accountData && reviews?.some(r => r.account_id === accountData.account_id))
+
   res.render("inventory/detail", {
     title: `${vehicleData.inv_make} ${vehicleData.inv_model}`,
     nav,
-    vehicleHTML
+    vehicleHTML,
+    vehicleData,
+    reviews,
+    avgRating,
+    message: req.flash("message"),
+    formData: (req.flash("formData") || [null])[0],
+    accountData,
+    userHasReview
   })
 }
 

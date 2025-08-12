@@ -20,6 +20,7 @@ const static = require("./routes/static")
 const inventoryRoute = require("./routes/inventoryRoute")
 const cookieParser = require("cookie-parser")
 const accountRoute = require("./routes/accountRoute")
+const reviewRoute = require("./routes/reviewRoute")
 
 /* ***********************
  * Middleware Setup
@@ -53,6 +54,7 @@ app.use(express.static("public"))
 app.use(cookieParser())
 app.use(utilities.checkJWTToken)
 app.use("/account", accountRoute)
+app.use("/reviews", reviewRoute)
 
 app.use((req, res, next) => {
   res.locals.accountData = res.locals.accountData || req.session?.accountData || null
